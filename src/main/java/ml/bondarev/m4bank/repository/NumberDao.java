@@ -12,4 +12,7 @@ public interface NumberDao extends JpaRepository<Number, Integer> {
 
     @Query("SELECT se.value FROM Number se WHERE se.name=:name")
     public int getValueNumberByName(@Param("name") String name);
+
+    public void removeNumberByName(@Param("name") String name);
+
 }

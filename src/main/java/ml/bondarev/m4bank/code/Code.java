@@ -1,4 +1,4 @@
-package ml.bondarev.m4bank.codeError;
+package ml.bondarev.m4bank.code;
 
 public enum Code {
 
@@ -9,7 +9,8 @@ public enum Code {
     NotInDatabase("12", "Item not in database"),
     AlreadyBeenCreated("13", "Item has already been created"),
     SameParameters("14", "The addition parameters are the same."),
-    NotConnect("21", "No database connection");
+    NotConnect("21", "No database connection"),
+    NotFoundException("31", "Not found exception");
 
     private String code;
     private String description;

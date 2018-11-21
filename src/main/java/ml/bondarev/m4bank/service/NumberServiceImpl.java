@@ -1,8 +1,10 @@
 package ml.bondarev.m4bank.service;
 
-import ml.bondarev.m4bank.codeError.Code;
+import ml.bondarev.m4bank.code.Code;
 import ml.bondarev.m4bank.entity.Number;
 import ml.bondarev.m4bank.repository.NumberDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.AopInvocationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,27 +20,52 @@ public class NumberServiceImpl implements NumberService {
     @Autowired
     private NumberDao numberDao;
 
+    private static final Logger log = LoggerFactory.getLogger(NumberServiceImpl.class);
+
+
     @Override
-    public Code addNumber(Number number) {
+    public Map<String, String> addNumber(Number number) {
+        Map<String, String> res = new HashMap<>();
+        Code resultCode = null;
+
         try {
             Number testNumber = numberDao.getNumberByName(number.getName());
 
             numberDao.save(number);
-            return Code.Created;
+            resultCode = Code.Created;
+
+            log.info("Entity added successfully. Code: " + resultCode.getCode());
         } catch (IncorrectResultSizeDataAccessException ex) {
-            return Code.AlreadyBeenCreated;
+            resultCode = Code.AlreadyBeenCreated;
         } catch (Exception ex) {
-            return Code.NotConnect;
+            resultCode = Code.NotConnect;
+        } finally {
+            res.put("code", resultCode.getCode());
+            res.put("description", resultCode.getDescription());
+
+            return res;
         }
     }
 
     @Override
-    public Code removeNumber(int numberId) {
+    public Map<String, String> removeNumber(int numberId) {
+        Map<String, String> res = new HashMap<>();
+        Code resultCode = null;
+
         try {
             numberDao.deleteById(numberId);
-            return Code.Removed;
+            resultCode = Code.Removed;
+
+            log.info("Entity deleted successfully. Code: " + resultCode.getCode());
         } catch (EmptyResultDataAccessException er) {
-            return Code.NotInDatabase;
+            resultCode = Code.NotInDatabase;
+        } catch (Exception ex) {
+            resultCode = Code.NotFoundException; // Test
+        } finally {
+            res.put("code", resultCode.getCode());
+            res.put("description", resultCode.getDescription());
+
+            return res;
         }
     }
 
@@ -47,11 +74,6 @@ public class NumberServiceImpl implements NumberService {
         Map<String, String> res = new HashMap<>();
         Code resultCode = null;
         Integer result = null;
-
-//        res.put("value", Integer.toString(numberDao.getValueNumberByName(name1) + numberDao.getValueNumberByName(name2)));
-//
-//        return res;
-
 
         try {
             if (name1.equals(name2)) {
@@ -63,6 +85,8 @@ public class NumberServiceImpl implements NumberService {
             result = (numberDao.getValueNumberByName(name1) +
                     numberDao.getValueNumberByName(name2));
             resultCode = Code.AddSuccessful;
+
+            log.info("Entity amount returned. Code: " + resultCode.getCode() + ", sum: " + result);
         } catch (AopInvocationException ex) {
             resultCode = Code.AlreadyBeenCreated;
         } finally {
@@ -83,6 +107,5 @@ public class NumberServiceImpl implements NumberService {
     public Number getNumberByName(String name) {
         return numberDao.getNumberByName(name);
     }
-
 
 }

@@ -1,7 +1,5 @@
 package ml.bondarev.m4bank.entity;
 
-import lombok.Data;
-
 import javax.persistence.*;
 
 @Entity
