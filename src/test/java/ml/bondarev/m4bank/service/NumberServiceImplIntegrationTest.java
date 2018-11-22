@@ -1,6 +1,4 @@
-package ml.bondarev.m4bank.service;
-
-import ml.bondarev.m4bank.entity.Number;
+import ml.bondarev.m4bank.entity.NumberEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +18,12 @@ public class NumberServiceImplIntegrationTest {
 
     @Test
     public void addNumber() {
-        Number number1 = new Number();
-        number1.setName("IT entity 1");
-        number1.setValue(2);
+        NumberEntity numberEntity1 = new NumberEntity("IT entity 1", 2);
 
-        Number number2 = new Number();
-        number2.setName("IT entity 2");
-        number1.setValue(4);
+        NumberEntity numberEntity2 = new NumberEntity("IT entity 2", 4);
 
-        Map<String, String> res1 = numberService.addNumber(number1);
-        Map<String, String> res2 = numberService.addNumber(number2);
+        Map<String, String> res1 = numberService.addNumber(numberEntity1);
+        Map<String, String> res2 = numberService.addNumber(numberEntity2);
 
         assertThat(res1).isNotNull().isNotEmpty();
         assertThat(res2).isNotNull().isNotEmpty();
