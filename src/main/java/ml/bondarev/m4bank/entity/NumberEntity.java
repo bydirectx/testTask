@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "sum_entity")
-public class Number {
+public class NumberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,10 @@ public class Number {
     @Column(name = "value")
     private int value;
 
-    public Number() {
+    public NumberEntity() {
     }
 
-    public Number(String name, int value) {
+    public NumberEntity(String name, int value) {
         this.name = name;
         this.value = value;
     }

@@ -29,7 +29,25 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	runtimeOnly('mysql:mysql-connector-java')
 	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
-	compile group: 'com.zaxxer', name: 'HikariCP', version: '3.2.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	compileOnly 'org.projectlombok:lombok:1.18.4'
+}
+
+task hello
+
+task installService
+
+installService << {
+    println 'clean directory'
+	dependsOn(clean)
+}
+
+installService << {
+	println 'run test'
+	dependsOn test
+}
+
+installService << {
+	println 'build service'
+	dependsOn build
 }

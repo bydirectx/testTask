@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class NumberEntityDaoIntegrationTest {
+public class NumberDaoIntegrationTest {
 
     @Autowired
     private TestEntityManager entityManager;
@@ -26,11 +26,11 @@ public class NumberEntityDaoIntegrationTest {
     public void getNumberByName() {
         NumberEntity testNumber = numberDao.getNumberByName("Test");
         if (testNumber == null) {
-            NumberEntity number = new NumberEntity();
-            number.setName("Test");
-            number.setValue(1);
+            NumberEntity number = new NumberEntity("Test", 1);
 
-            testNumber = numberDao.save(number);
+            numberDao.save(number);
+            testNumber = numberDao.getNumberByName("Test");
+
         }
 
         assertEquals(testNumber.getName(), "Test");
@@ -38,16 +38,14 @@ public class NumberEntityDaoIntegrationTest {
 
     @Test
     public void getValueNumberByName() {
-        NumberEntity testNumber = null;
-        int testValue = numberDao.getValueNumberByName("Test");
-        if (testValue != 1) {
-            NumberEntity number = new NumberEntity();
-            number.setName("Test");
-            number.setValue(1);
+        Integer testValue = numberDao.getValueNumberByName("Test");
+        if (testValue == null) {
+            NumberEntity number = new NumberEntity("Test", 1);
 
-            testValue = numberDao.save(number).getValue();
+            numberDao.save(number);
+            testValue = numberDao.getValueNumberByName("Test");
         }
 
-        assertEquals(testValue, 1);
+        assertEquals(testValue, new Integer(1));
     }
 }

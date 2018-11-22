@@ -1,7 +1,7 @@
 package ml.bondarev.m4bank.service;
 
 import ml.bondarev.m4bank.code.Code;
-import ml.bondarev.m4bank.entity.Number;
+import ml.bondarev.m4bank.entity.NumberEntity;
 import ml.bondarev.m4bank.repository.NumberDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +24,12 @@ public class NumberServiceImpl implements NumberService {
 
 
     @Override
-    public Map<String, String> addNumber(Number number) {
+    public Map<String, String> addNumber(NumberEntity numberEntity) {
         Map<String, String> res = new HashMap<>();
         Code resultCode = null;
 
         try {
-            Number testNumber = numberDao.getNumberByName(number.getName());
-
-            numberDao.save(number);
+            numberDao.save(numberEntity);
             resultCode = Code.Created;
 
             log.info("Entity added successfully. Code: " + resultCode.getCode());
@@ -60,7 +58,7 @@ public class NumberServiceImpl implements NumberService {
         } catch (EmptyResultDataAccessException er) {
             resultCode = Code.NotInDatabase;
         } catch (Exception ex) {
-            resultCode = Code.NotFoundException; // Test
+            resultCode = Code.NotFoundException;
         } finally {
             res.put("code", resultCode.getCode());
             res.put("description", resultCode.getDescription());
@@ -104,7 +102,8 @@ public class NumberServiceImpl implements NumberService {
     }
 
     @Override
-    public Number getNumberByName(String name) {
+    public NumberEntity getNumberByName(String name) {
+        log.info("Enitity " + name + " returned");
         return numberDao.getNumberByName(name);
     }
 

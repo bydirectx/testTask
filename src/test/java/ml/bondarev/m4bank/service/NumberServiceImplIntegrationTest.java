@@ -1,4 +1,7 @@
+package ml.bondarev.m4bank.service;
+
 import ml.bondarev.m4bank.entity.NumberEntity;
+import ml.bondarev.m4bank.service.NumberService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

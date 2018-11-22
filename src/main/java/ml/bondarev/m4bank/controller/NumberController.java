@@ -1,6 +1,6 @@
 package ml.bondarev.m4bank.controller;
 
-import ml.bondarev.m4bank.entity.Number;
+import ml.bondarev.m4bank.entity.NumberEntity;
 import ml.bondarev.m4bank.service.NumberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,16 +22,15 @@ public class NumberController {
 
 
     @PostMapping(value = "/add")
-    public Map<String, String> addNumber(@ModelAttribute Number number) {
-        log.info("The addNumber method was called. Model: " + number);
-        return numberService.addNumber(number);
+    public Map<String, String> addNumber(@ModelAttribute NumberEntity numberEntity) {
+        log.info("The addNumber method was called. Model: " + numberEntity);
+        return numberService.addNumber(numberEntity);
     }
 
     @PostMapping(value = "/remove")
     public Map<String, String> removeNumber(HttpServletRequest req) {
         log.info("The removeNumber method was called. Entity identifier: " + req.getParameter("numberId"));
         return numberService.removeNumber(parseInt(req.getParameter("numberId")));
-//        return numberService.removeNumber(req.getParameter("name"));
     }
 
     @PostMapping(value = "/sum")
