@@ -47,3 +47,7 @@ task copyPerformingFile(type: Copy) {
 	from "${buildDir}/libs"
 	into "${buildDir}/install"
 }
+
+task installNumberService {
+	dependsOn build
+}
