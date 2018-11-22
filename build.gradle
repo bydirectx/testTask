@@ -18,6 +18,7 @@ apply plugin: 'io.spring.dependency-management'
 group = 'ml.bondarev'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
+archivesBaseName = 'numberService'
 
 repositories {
 	mavenCentral()
@@ -33,21 +34,16 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.4'
 }
 
-task hello
-
-task installService
-
-installService << {
-    println 'clean directory'
-	dependsOn(clean)
+bootJar {
+	baseName = 'numberServiceJar'
+	version = "1.0"
 }
 
-installService << {
-	println 'run test'
-	dependsOn test
+task removeBuildDir(type: Delete) {
+	delete rootProject.buildDir
 }
 
-installService << {
-	println 'build service'
-	dependsOn build
+task copyPerformingFile(type: Copy) {
+	from "${buildDir}/libs"
+	into "${buildDir}/install"
 }
