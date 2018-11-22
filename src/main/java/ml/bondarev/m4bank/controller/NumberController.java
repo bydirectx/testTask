@@ -13,6 +13,7 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 
 @RestController
+@RequestMapping("/api")
 public class NumberController {
 
     @Autowired

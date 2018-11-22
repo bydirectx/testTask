@@ -3,7 +3,7 @@ package ml.bondarev.m4bank.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "sum_entity")
+@Table(name = "number_service")
 public class NumberEntity {
 
     @Id
