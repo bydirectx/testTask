@@ -33,7 +33,7 @@ public class NumberControllerTest {
     public void addNumber() throws Exception {
         numberController = mock(NumberController.class);
 
-        this.mockMvc.perform(post("/add").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+        this.mockMvc.perform(post("/api/add").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"));
     }
@@ -42,7 +42,7 @@ public class NumberControllerTest {
     public void removeNumber() throws Exception {
         numberController = mock(NumberController.class);
 
-        this.mockMvc.perform(post("/remove?numberId=1").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+        this.mockMvc.perform(post("/api/remove?numberId=1").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"));
     }
@@ -51,7 +51,7 @@ public class NumberControllerTest {
     public void getSumNumber() throws Exception {
         numberController = mock(NumberController.class);
 
-        this.mockMvc.perform(post("/sum?name1=test1&name2=test2").accept(MediaType.parseMediaType("application/json")))
+        this.mockMvc.perform(post("/api/sum?name1=test1&name2=test2").accept(MediaType.parseMediaType("application/json")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"));
     }

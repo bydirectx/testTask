@@ -46,6 +46,6 @@ public class NumberDaoIntegrationTest {
             testValue = numberDao.getValueNumberByName("Test");
         }
 
-        assertEquals(testValue, new Integer(1));
+        assertEquals(testValue, new Integer(0));
     }
 }
