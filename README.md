@@ -38,7 +38,7 @@ NotInDatabase("12", "Item not in database")</br>
 AlreadyBeenCreated("13", "Item has already been created")</br>
 SameParameters("14", "The addition parameters are the same.")</br>
 
-###Ошибка БД</br>
+### Ошибка БД</br>
 NotConnect("21", "No database connection")
 
 ### Неизвестная ошибка</br>
