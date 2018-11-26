@@ -1,18 +1,16 @@
 package ml.bondarev.m4bank.service;
 
-import ml.bondarev.m4bank.entity.NumberEntity;
+import ml.bondarev.m4bank.NumberEntity;
+import ml.bondarev.m4bank.response.Response;
 import org.springframework.stereotype.Controller;
-
-import java.util.Map;
 
 @Controller
 public interface NumberService {
 
-    public Map<String, String> addNumber(NumberEntity numberEntity);
+    public Response addNumber(NumberEntity numberEntity);
 
-    public Map<String, String> removeNumber(int numberId);
+    public Response removeNumber(String name);
 
-    public Map<String, String> getSumNumberByName(String name1, String name2);
+    public Response getSumNumberByName(String name1, String name2);
 
-    public NumberEntity getNumberByName(String name);
 }

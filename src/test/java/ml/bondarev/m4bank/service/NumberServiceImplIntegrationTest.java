@@ -1,18 +1,22 @@
 package ml.bondarev.m4bank.service;
 
-import ml.bondarev.m4bank.entity.NumberEntity;
+import ml.bondarev.m4bank.Code;
+import ml.bondarev.m4bank.NumberEntity;
+import ml.bondarev.m4bank.response.ResponseCode;
+import ml.bondarev.m4bank.response.ResponseParameter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 public class NumberServiceImplIntegrationTest {
 
     @Autowired
@@ -24,31 +28,37 @@ public class NumberServiceImplIntegrationTest {
 
         NumberEntity numberEntity2 = new NumberEntity("IT entity 2", 4);
 
-        Map<String, String> res1 = numberService.addNumber(numberEntity1);
-        Map<String, String> res2 = numberService.addNumber(numberEntity2);
+        ResponseCode res1 = (ResponseCode) numberService.addNumber(numberEntity1);
+        ResponseCode res2 = (ResponseCode) numberService.addNumber(numberEntity2);
 
-        assertThat(res1).isNotNull().isNotEmpty();
-        assertThat(res2).isNotNull().isNotEmpty();
+        assertThat(res1).isNotNull();
+        assertThat(res2).isNotNull();
 
-        System.out.println("Code: " + res1.get("code") + ", " + res2.get("code"));
+        assertEquals(res1.getCode(), Code.OK.getCode());
+        assertEquals(res2.getCode(), Code.OK.getCode());
+
+        System.out.println("Code: " + res1.getCode() + ", " + res2.getCode());
     }
 
     @Test
     public void getSumNumberByName() {
-        Map<String, String> res = numberService.getSumNumberByName("IT entity 1", "IT entity 2");
+        ResponseParameter res = (ResponseParameter) numberService.getSumNumberByName("Test entity 3", "Test entity 4");
 
-        assertThat(res).isNotNull().isNotEmpty();
-        System.out.println("Code: " + res.get("code"));
+        assertThat(res).isNotNull();
+        assertEquals(res.getCode(), Code.OK.getCode());
+        System.out.println("Code: " + res.getCode());
     }
 
     @Test
     public void removeNumber() {
-        Map<String, String> res = numberService.removeNumber(numberService.getNumberByName("IT entity 1").getId());
-        assertThat(res).isNotNull().isNotEmpty();
-        System.out.println("Code: " + res.get("code"));
+        ResponseCode res = (ResponseCode) numberService.removeNumber("Test entity 1");
+        assertThat(res).isNotNull();
+        System.out.println("Code: " + res.getCode());
+        assertEquals(res.getCode(), Code.OK.getCode());
 
-        res = numberService.removeNumber(numberService.getNumberByName("IT entity 2").getId());
-        assertThat(res).isNotNull().isNotEmpty();
-        System.out.println("Code: " + res.get("code"));
+        res = (ResponseCode) numberService.removeNumber("Test entity 2");
+        assertThat(res).isNotNull();
+        System.out.println("Code: " + res.getCode());
+        assertEquals(res.getCode(), Code.OK.getCode());
     }
 }

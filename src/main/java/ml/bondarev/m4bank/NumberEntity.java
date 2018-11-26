@@ -1,16 +1,15 @@
-package ml.bondarev.m4bank.entity;
+package ml.bondarev.m4bank;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "number_service")
+@Table(name = "number_entity")
 public class NumberEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-
     @Column(name = "name")
     private String name;
 
@@ -23,14 +22,6 @@ public class NumberEntity {
     public NumberEntity(String name, int value) {
         this.name = name;
         this.value = value;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -48,4 +39,5 @@ public class NumberEntity {
     public void setValue(int value) {
         this.value = value;
     }
+
 }

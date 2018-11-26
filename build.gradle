@@ -27,20 +27,20 @@ repositories {
 dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	implementation('org.springframework.boot:spring-boot-starter-web')
-	runtimeOnly('mysql:mysql-connector-java')
-	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+	compileOnly 'org.projectlombok:lombok:1.18.4'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+
+	runtime('org.hsqldb:hsqldb')
+	runtime('mysql:mysql-connector-java:5.1.25')
 }
 
 bootJar {
-	baseName = 'numberServiceJar'
-	version = "1.0"
-}
-
-task removeBuildDir(type: Delete) {
-	delete rootProject.buildDir
+	baseName = 'sum_service'
+	version = ''
 }
 
 task copyPerformingFile(type: Copy) {
@@ -48,6 +48,10 @@ task copyPerformingFile(type: Copy) {
 	into "${buildDir}/install"
 }
 
-task installNumberService {
-	dependsOn build
+test {
+	exclude 'ml/bondarev/**'
+}
+
+task installSumService {
+	dependsOn build, copyPerformingFile
 }

@@ -1,18 +1,17 @@
 package ml.bondarev.m4bank.service;
 
-import ml.bondarev.m4bank.code.Code;
-import ml.bondarev.m4bank.entity.NumberEntity;
-import ml.bondarev.m4bank.repository.NumberDao;
+import ml.bondarev.m4bank.Code;
+import ml.bondarev.m4bank.NumberDao;
+import ml.bondarev.m4bank.NumberEntity;
+import ml.bondarev.m4bank.response.Response;
+import ml.bondarev.m4bank.response.ResponseCode;
+import ml.bondarev.m4bank.response.ResponseParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.AopInvocationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class NumberServiceImpl implements NumberService {
@@ -24,87 +23,49 @@ public class NumberServiceImpl implements NumberService {
 
 
     @Override
-    public Map<String, String> addNumber(NumberEntity numberEntity) {
-        Map<String, String> res = new HashMap<>();
-        Code resultCode = null;
-
+    public Response addNumber(NumberEntity numberEntity) {
         try {
+            NumberEntity number = numberDao.getNumberByName(numberEntity.getName());
+            if (number != null) {
+                return new ResponseCode(Code.ALREADY_BEEN_CREATED);
+            }
+
             numberDao.save(numberEntity);
-            resultCode = Code.Created;
 
-            log.info("Entity added successfully. Code: " + resultCode.getCode());
-        } catch (IncorrectResultSizeDataAccessException ex) {
-            resultCode = Code.AlreadyBeenCreated;
+            log.info("Entity added successfully. Code: " + Code.OK + ", name: " + number.getName());
+            return new ResponseCode(Code.OK);
         } catch (Exception ex) {
-            resultCode = Code.NotConnect;
-        } finally {
-            res.put("code", resultCode.getCode());
-            res.put("description", resultCode.getDescription());
-
-            return res;
+            return new ResponseCode(Code.NOT_FOUND_EXCEPTION);
         }
     }
 
     @Override
-    public Map<String, String> removeNumber(int numberId) {
-        Map<String, String> res = new HashMap<>();
-        Code resultCode = null;
-
+    public Response removeNumber(String name) {
         try {
-            numberDao.deleteById(numberId);
-            resultCode = Code.Removed;
+            NumberEntity number = numberDao.getNumberByName(name);
+            numberDao.delete(number);
 
-            log.info("Entity deleted successfully. Code: " + resultCode.getCode());
-        } catch (EmptyResultDataAccessException er) {
-            resultCode = Code.NotInDatabase;
+            log.info("Entity deleted successfully. Code: " + Code.OK + ", name: " + name);
+            return new ResponseCode(Code.OK);
+        } catch (InvalidDataAccessApiUsageException er) {
+            return new ResponseCode(Code.NOT_IN_DATABASE);
         } catch (Exception ex) {
-            resultCode = Code.NotFoundException;
-        } finally {
-            res.put("code", resultCode.getCode());
-            res.put("description", resultCode.getDescription());
-
-            return res;
+            return new ResponseCode(Code.NOT_FOUND_EXCEPTION);
         }
     }
 
     @Override
-    public Map<String, String> getSumNumberByName(String name1, String name2) {
-        Map<String, String> res = new HashMap<>();
-        Code resultCode = null;
-        Integer result = null;
-
+    public Response getSumNumberByName(String name1, String name2) {
         try {
-            if (name1.equals(name2)) {
-                resultCode = Code.SameParameters;
+            int sum = ((numberDao.getValueNumberByName(name1) +
+                    numberDao.getValueNumberByName(name2)));
 
-                throw new Exception("The addition parameters are the same.");
-            }
-
-            result = (numberDao.getValueNumberByName(name1) +
-                    numberDao.getValueNumberByName(name2));
-            resultCode = Code.AddSuccessful;
-
-            log.info("Entity amount returned. Code: " + resultCode.getCode() + ", sum: " + result);
+            log.info("Entity amount returned. Code: " + Code.OK.getCode() + ", sum: " + sum);
+            return new ResponseParameter(Code.OK, sum);
         } catch (AopInvocationException ex) {
-            resultCode = Code.AlreadyBeenCreated;
-        } finally {
-            res.put("code", resultCode.getCode());
-            res.put("description", resultCode.getDescription());
-
-            if (result == null) {
-
-            } else {
-                res.put("result", Integer.toString(result));
-            }
-
-            return res;
+            return new ResponseCode(Code.NOT_IN_DATABASE);
+        } catch (Exception ex) {
+            return new ResponseCode(Code.NOT_FOUND_EXCEPTION);
         }
     }
-
-    @Override
-    public NumberEntity getNumberByName(String name) {
-        log.info("Enitity " + name + " returned");
-        return numberDao.getNumberByName(name);
-    }
-
 }

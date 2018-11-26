@@ -1,5 +1,4 @@
 CREATE TABLE number_service(
-  id INT(2) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(30)
+  name VARCHAR(30) PRIMARY KEY,
   value INT(11)
 ) engine = InnoDB;
