@@ -34,7 +34,11 @@ public class NumberServiceImpl implements NumberService {
 
             log.info("Entity added successfully. Code: " + Code.OK + ", name: " + number.getName());
             return new ResponseCode(Code.OK);
+        } catch (NullPointerException ex) {
+            numberDao.save(numberEntity);
+            return new ResponseCode(Code.OK);
         } catch (Exception ex) {
+            System.out.println(ex);
             return new ResponseCode(Code.NOT_FOUND_EXCEPTION);
         }
     }

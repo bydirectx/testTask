@@ -37,7 +37,7 @@ public class NumberServiceImplIntegrationTest {
         assertEquals(res1.getCode(), Code.OK.getCode());
         assertEquals(res2.getCode(), Code.OK.getCode());
 
-        System.out.println("Code: " + res1.getCode() + ", " + res2.getCode());
+        System.out.println("Code 1: " + res1.getCode() + ", code 2: " + res2.getCode());
     }
 
     @Test
@@ -46,6 +46,7 @@ public class NumberServiceImplIntegrationTest {
 
         assertThat(res).isNotNull();
         assertEquals(res.getCode(), Code.OK.getCode());
+        assertEquals(res.getSum(), 7);
         System.out.println("Code: " + res.getCode());
     }
 

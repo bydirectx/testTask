@@ -21,7 +21,7 @@ public class NumberController {
 
     @PostMapping(value = "/add")
     public Response addNumber(@ModelAttribute NumberEntity numberEntity) {
-        log.info("The addNumber method was called. Name number: " + numberEntity.getName() + ", value number" +
+        log.info("The addNumber method was called. Name number: " + numberEntity.getName() + ", value number: " +
                 numberEntity.getValue());
         return numberService.addNumber(numberEntity);
     }
