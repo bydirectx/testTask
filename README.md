@@ -18,42 +18,40 @@ Postman
 
 # Test
 
-Написаны как Unit, так и интеграционные тесты. При запуске тестов необходимо соединение с базой данных.
+Написаны интеграционные тесты. Производится тестирование DAO, Service и Controller слоя. При тестировании используется HSQLDB, при запуске или деплое проекта - MySQL. Конфигурация находится в application.properties и application-test.properties.
 
 # Request Codes
 
 Имеется обработка ошибок. В случае возникновения исключительной ситуации будет возвращен код ошибки и ее описание.</br>
 Два запроса возвращают коды ответа (/add, /remove), третий (/sum) возвращает сумму двух значений вместе с кодом ответа.</br>
+Имеется два класса (ResponseCode и ResponseParameter)</br>
+ResponseCode используется для передачи кода ответа и его описания.</br>
+ResponseParameter, для передачи кода ответа, его описания, а так же значения sum.</br>
+Оба эти класса реализуют интерфейс Response.
 
 ## Codes: ##
 
 ### Успешно выполненный запрос</br>
-Created("1", "Created")</br>
-Removed("2", "Removed")</br>
-AddSuccessful("3", "Addition successful")
+OK(0, "OK")</br>
 
 ### Ошибки сервера</br>
-NotAdded("11", "Item not added")</br>
-NotInDatabase("12", "Item not in database")</br>
-AlreadyBeenCreated("13", "Item has already been created")</br>
-SameParameters("14", "The addition parameters are the same.")</br>
-
-### Ошибка БД</br>
-NotConnect("21", "No database connection")
+NOT_IN_DATABASE(11, "Item not in database"),</br>
+ALREADY_BEEN_CREATED(12, "Item has already been created")</br>
 
 ### Неизвестная ошибка</br>
 NotFoundException("31", "Not found exception")
 
 # Gradle tasks
 
-Удалить директорию build:</br>
-$ gradle removeBuildDir</br>
+### При сборке проекта тесты не выполняются!
 
 Скопировать элементы из build в install:</br>
 $ gradle copyPerformingFile</br>
 
 Собрать проект:</br>
-$ gradle installNumberService</br>
+$ gradle installSumService</br>
 
-Проект можно запустить командой:</br>
-$ java -jar numberServiceJar-1.0.jar
+При использовании task installSumService, проект собирается, а после jar файл помещается в директорию install.
+
+Сервис можно запустить командой:</br>
+$ java -jar sum_service.jar
