@@ -38,7 +38,6 @@ public class NumberServiceImpl implements NumberService {
             numberDao.save(numberEntity);
             return new ResponseCode(Code.OK);
         } catch (Exception ex) {
-            System.out.println(ex);
             return new ResponseCode(Code.NOT_FOUND_EXCEPTION);
         }
     }
